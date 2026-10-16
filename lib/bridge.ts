@@ -19,15 +19,15 @@ export function prefersReducedMotion(): boolean {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 
-export function scrollToForm(): void {
-  if (typeof document === "undefined") return;
-  const target = document.getElementById("raschet");
-  if (!target) return;
+/** Прокручивает страницу к элементу с поправкой на высоту шапки. */
+export function scrollToElement(element: HTMLElement | null, offset = 96): void {
+  if (!element || typeof window === "undefined") return;
 
   try {
-    target.scrollIntoView({
+    element.scrollIntoView({
       behavior: prefersReducedMotion() ? "auto" : "smooth",
       block: "start",
+      inline: "nearest",
     });
   } catch {
     // Очень старые движки — сработает страховка ниже
@@ -41,10 +41,15 @@ export function scrollToForm(): void {
    * установка scrollTop применяется синхронно и срабатывает всегда.
    */
   window.setTimeout(() => {
-    const top = target.getBoundingClientRect().top;
-    if (Math.abs(top - 96) > 140) {
+    const top = element.getBoundingClientRect().top;
+    if (Math.abs(top - offset) > 140) {
       const scrolled = window.scrollY || document.scrollingElement?.scrollTop || 0;
-      window.scrollTo({ top: Math.max(top + scrolled - 96, 0), behavior: "auto" });
+      window.scrollTo({ top: Math.max(top + scrolled - offset, 0), behavior: "auto" });
     }
   }, 420);
+}
+
+export function scrollToForm(): void {
+  if (typeof document === "undefined") return;
+  scrollToElement(document.getElementById("raschet"));
 }
