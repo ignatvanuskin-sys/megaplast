@@ -1,32 +1,15 @@
 import { NextResponse } from "next/server";
 import { ADMIN_COOKIE, adminConfigured, checkPassword, createToken, cookieOptions } from "@/lib/auth";
+import { clientIp, RateLimiter } from "@/lib/request";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-type Bucket = { count: number; resetAt: number };
-const attempts = new Map<string, Bucket>();
-const WINDOW_MS = 15 * 60 * 1000;
-const LIMIT = 10;
-
-function tooMany(ip: string): boolean {
-  const now = Date.now();
-  const current = attempts.get(ip);
-  if (!current || current.resetAt < now) {
-    attempts.set(ip, { count: 1, resetAt: now + WINDOW_MS });
-    return false;
-  }
-  current.count += 1;
-  return current.count > LIMIT;
-}
+/** Защита от подбора пароля: 10 попыток за 15 минут на адрес */
+const attempts = new RateLimiter(10, 15 * 60 * 1000);
 
 export async function POST(request: Request) {
-  const ip =
-    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-    request.headers.get("x-real-ip") ||
-    "unknown";
-
-  if (tooMany(ip)) {
+  if (attempts.hit(clientIp(request))) {
     return NextResponse.json(
       { ok: false, code: "RATE_LIMITED", message: "Слишком много попыток входа." },
       { status: 429 },

@@ -31,7 +31,7 @@ export default function FinalCta() {
           </p>
 
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-            <a href="#raschet" className="btn btn-accent group">
+            <a href="/#raschet" className="btn btn-accent group">
               Рассчитать стоимость
               <ArrowRight
                 className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"

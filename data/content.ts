@@ -97,29 +97,8 @@ export const materialGroups = [
   },
 ];
 
-export const contactMethods = [
-  { id: "whatsapp", label: "WhatsApp" },
-  { id: "call", label: "Звонок" },
-  { id: "either", label: "Любой способ" },
-] as const;
-
-export const productOptions = [
-  "Пластиковые окна (ПВХ)",
-  "Алюминиевые системы",
-  "Двери",
-  "Витражи / панорамное остекление",
-  "Балкон или лоджия",
-  "Москитные сетки",
-  "Ремонт / обслуживание",
-  "Другое",
-] as const;
-
-export const objectTypes = [
-  "Квартира",
-  "Частный дом",
-  "Коммерческое помещение",
-  "Строящийся объект",
-] as const;
+/* Списки для формы живут в data/catalog.ts — единый источник,
+   чтобы варианты выбора не расходились между блоками. */
 
 export type Faq = { q: string; a: string };
 

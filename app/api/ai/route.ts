@@ -1,26 +1,13 @@
 import { NextResponse } from "next/server";
 import { askConsultant, isConfigured, sanitizeMessages } from "@/lib/groq";
+import { clientIp, RateLimiter } from "@/lib/request";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 /** ИИ-консультант. Ключ Groq используется только на сервере. */
 
-type Bucket = { count: number; resetAt: number };
-const buckets = new Map<string, Bucket>();
-const WINDOW_MS = 10 * 60 * 1000;
-const LIMIT = 40;
-
-function rateLimited(ip: string): boolean {
-  const now = Date.now();
-  const current = buckets.get(ip);
-  if (!current || current.resetAt < now) {
-    buckets.set(ip, { count: 1, resetAt: now + WINDOW_MS });
-    return false;
-  }
-  current.count += 1;
-  return current.count > LIMIT;
-}
+const limiter = new RateLimiter(40, 10 * 60 * 1000);
 
 export async function POST(request: Request) {
   if (!isConfigured()) {
@@ -35,12 +22,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const ip =
-    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-    request.headers.get("x-real-ip") ||
-    "unknown";
-
-  if (rateLimited(ip)) {
+  if (limiter.hit(clientIp(request))) {
     return NextResponse.json(
       {
         ok: false,

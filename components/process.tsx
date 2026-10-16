@@ -16,7 +16,7 @@ export default function Process() {
             </p>
           </div>
           <a
-            href="#raschet"
+            href="/#raschet"
             className="btn btn-primary shrink-0 self-start lg:self-auto"
             data-reveal
           >

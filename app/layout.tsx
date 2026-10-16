@@ -45,10 +45,10 @@ export const metadata: Metadata = {
     description,
     images: [
       {
-        url: "/images/projects/project-06.jpg",
-        width: 960,
-        height: 1280,
-        alt: "Панорамное остекление частного дома — работа MEGAPLAST KZ",
+        url: "/og.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Фасад с рядом установленных окон — работа MEGAPLAST KZ в Алматы",
       },
     ],
   },
@@ -56,7 +56,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title,
     description,
-    images: ["/images/projects/project-06.jpg"],
+    images: ["/og.jpg"],
   },
   robots: {
     index: true,
@@ -84,7 +84,7 @@ const jsonLd = {
     "Изготовление и установка окон из ПВХ и алюминия, дверей, витражей, остекление балконов и лоджий в Алматы. Замер, доставка и монтаж бесплатно.",
   url: siteUrl,
   telephone: primaryPhone.tel,
-  image: `${siteUrl}/images/projects/project-06.jpg`,
+  image: `${siteUrl}/og.jpg`,
   address: {
     "@type": "PostalAddress",
     streetAddress: "улица Жанкожа батыра, 23, 1 этаж",

@@ -51,5 +51,11 @@ export function scrollToElement(element: HTMLElement | null, offset = 96): void 
 
 export function scrollToForm(): void {
   if (typeof document === "undefined") return;
-  scrollToElement(document.getElementById("raschet"));
+  const target = document.getElementById("raschet");
+  // Форма есть только на главной: с других страниц уводим к ней по якорю
+  if (!target) {
+    window.location.href = "/#raschet";
+    return;
+  }
+  scrollToElement(target);
 }

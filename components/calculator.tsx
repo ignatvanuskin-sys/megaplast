@@ -77,7 +77,6 @@ const STEP_FIELDS: (keyof LeadInput)[][] = [
 ];
 
 const FIELD_IDS: Record<string, string> = {
-  product: "lead-product",
   name: "lead-name",
   phone: "lead-phone",
   qty: "lead-qty",
@@ -116,7 +115,8 @@ export default function Calculator() {
   const [width, setWidth] = useState("");
   const [height, setHeight] = useState("");
 
-  const formRef = useRef<HTMLFormElement | null>(null);
+  /** Синхронный флаг: защищает от двойного нажатия до обновления состояния */
+  const sendingRef = useRef(false);
   const cardRef = useRef<HTMLDivElement | null>(null);
   const legendRef = useRef<HTMLSpanElement | null>(null);
   const firstRender = useRef(true);
@@ -267,6 +267,9 @@ export default function Calculator() {
       return;
     }
 
+    if (sendingRef.current) return;
+    sendingRef.current = true;
+
     setStatus("sending");
     setServerMessage("");
 
@@ -320,6 +323,8 @@ export default function Calculator() {
         "Сеть недоступна. Отправьте заявку в WhatsApp — данные уже собраны в сообщении.",
       );
       setStatus("error");
+    } finally {
+      sendingRef.current = false;
     }
   }
 
@@ -446,11 +451,7 @@ export default function Calculator() {
                             >
                               <span
                                 className={`block text-[12px] font-semibold tracking-[0.14em] ${
-                                  active
-                                    ? "text-ink"
-                                    : done
-                                      ? "text-ink-2"
-                                      : "text-ink-3/70"
+                                  active ? "text-ink" : done ? "text-ink-2" : "text-ink-3"
                                 }`}
                               >
                                 {String(index + 1).padStart(2, "0")}
@@ -476,7 +477,6 @@ export default function Calculator() {
                   </div>
 
                   <form
-                    ref={formRef}
                     onSubmit={(event) => {
                       event.preventDefault();
                       if (status === "sending") return;

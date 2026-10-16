@@ -293,7 +293,7 @@ export default function AiConsultant() {
                   }
                 }}
                 placeholder="Например: окно 1300×1400 в спальню"
-                className="field max-h-28 min-h-11 flex-1 resize-none py-3 text-[15px]"
+                className="field max-h-28 min-h-11 flex-1 resize-none py-3 text-[16px]"
               />
               <button
                 type="submit"

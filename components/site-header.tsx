@@ -1,20 +1,23 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { Menu, Phone, X } from "lucide-react";
 import Logo from "@/components/logo";
 import { company, primaryPhone, waLink } from "@/data/site";
 
+/* Абсолютные якоря: работают и с главной, и со страницы политики или 404 */
 const nav = [
-  { href: "#katalog", label: "Каталог" },
-  { href: "#proekty", label: "Проекты" },
-  { href: "#materialy", label: "Материалы" },
-  { href: "#otzyvy", label: "Отзывы" },
-  { href: "#faq", label: "Вопросы" },
-  { href: "#kontakty", label: "Контакты" },
+  { href: "/#katalog", label: "Каталог" },
+  { href: "/#proekty", label: "Проекты" },
+  { href: "/#materialy", label: "Материалы" },
+  { href: "/#otzyvy", label: "Отзывы" },
+  { href: "/#faq", label: "Вопросы" },
+  { href: "/#kontakty", label: "Контакты" },
 ];
 
 export default function SiteHeader() {
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -50,9 +53,29 @@ export default function SiteHeader() {
     >
       <div className="shell flex h-16 items-center justify-between gap-4 lg:h-20">
         <a
-          href="#top"
+          href="/"
           className="inline-flex min-h-11 shrink-0 items-center"
-          onClick={() => setOpen(false)}
+          onClick={(event) => {
+            setOpen(false);
+            // С главной поднимаемся наверх и убираем старый якорь из адреса,
+            // с других страниц — обычный переход домой
+            if (pathname === "/") {
+              event.preventDefault();
+              if (window.location.hash) {
+                window.history.replaceState(
+                  null,
+                  "",
+                  window.location.pathname + window.location.search,
+                );
+              }
+              window.scrollTo({
+                top: 0,
+                behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+                  ? "auto"
+                  : "smooth",
+              });
+            }
+          }}
           aria-label={`${company.fullName} — на главную`}
         >
           <Logo compact />
@@ -82,7 +105,7 @@ export default function SiteHeader() {
             <span className="whitespace-nowrap">{primaryPhone.label}</span>
           </a>
 
-          <a href="#raschet" className="btn btn-primary hidden sm:inline-flex">
+          <a href="/#raschet" className="btn btn-primary hidden sm:inline-flex">
             Рассчитать стоимость
           </a>
 
@@ -121,7 +144,11 @@ export default function SiteHeader() {
           </ul>
 
           <div className="mt-6 flex flex-col gap-3">
-            <a href="#raschet" onClick={() => setOpen(false)} className="btn btn-primary w-full">
+            <a
+              href="/#raschet"
+              onClick={() => setOpen(false)}
+              className="btn btn-primary w-full"
+            >
               Рассчитать стоимость
             </a>
             <a

@@ -146,7 +146,7 @@ export default function Contacts() {
 
             <div className="mt-6 flex flex-col gap-3 sm:flex-row">
               <a
-                href="#raschet"
+                href="/#raschet"
                 className="btn btn-primary"
               >
                 Оставить заявку на расчёт

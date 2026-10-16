@@ -38,14 +38,14 @@ export default function Hero() {
               data-reveal
               style={{ "--reveal-delay": "180ms" } as React.CSSProperties}
             >
-              <a href="#raschet" className="btn btn-primary group">
+              <a href="/#raschet" className="btn btn-primary group">
                 Рассчитать стоимость
                 <ArrowRight
                   className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
                   aria-hidden="true"
                 />
               </a>
-              <a href="#proekty" className="btn btn-outline">
+              <a href="/#proekty" className="btn btn-outline">
                 Смотреть проекты
               </a>
             </div>

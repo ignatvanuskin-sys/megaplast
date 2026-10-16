@@ -13,7 +13,9 @@
 
   --color-ink: #111315;
   --color-ink-2: #3a3f44;
-  --color-ink-3: #74797f;
+  /* Серый для подписей подобран так, чтобы проходить WCAG AA (≥4.5:1)
+     и на светлом камне, и на фоне paper-2 */
+  --color-ink-3: #696d73;
 
   --color-line: #ddd7cd;
   --color-line-2: #cfc8bc;
@@ -159,12 +161,6 @@
     border-color: var(--color-ink);
     background: rgba(17, 19, 21, 0.04);
   }
-  .btn-ghost {
-    color: var(--color-ink);
-    padding-inline: 0.25rem;
-    min-height: 2.5rem;
-  }
-
   /* Поля формы */
   .field {
     width: 100%;
@@ -179,7 +175,8 @@
       box-shadow 0.2s var(--ease-soft);
   }
   .field::placeholder {
-    color: #9aa0a6;
+    /* Достаточный контраст, чтобы подсказка читалась, а не угадывалась */
+    color: #6f757c;
   }
   .field:hover {
     border-color: #b8b0a2;
@@ -217,9 +214,6 @@
 }
 
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
   /* Мягкая «шторка» для читаемости текста на фотографии */
   .scrim {
     background: linear-gradient(
@@ -228,12 +222,6 @@
       rgba(9, 11, 12, 0.28) 42%,
       rgba(9, 11, 12, 0) 78%
     );
-  }
-  .no-scrollbar {
-    scrollbar-width: none;
-  }
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
   }
 }
 

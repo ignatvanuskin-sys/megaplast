@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { leadToMessage, validateLead, type LeadInput } from "@/lib/leads";
 import { createLead, storageInfo } from "@/lib/store";
+import { clientIp, RateLimiter } from "@/lib/request";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -20,21 +21,7 @@ const MAX_PHOTOS = 3;
 const MAX_PHOTO_BYTES = 8 * 1024 * 1024;
 const ALLOWED_PHOTO_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
-type Bucket = { count: number; resetAt: number };
-const buckets = new Map<string, Bucket>();
-const WINDOW_MS = 10 * 60 * 1000;
-const LIMIT = 8;
-
-function rateLimited(ip: string): boolean {
-  const now = Date.now();
-  const current = buckets.get(ip);
-  if (!current || current.resetAt < now) {
-    buckets.set(ip, { count: 1, resetAt: now + WINDOW_MS });
-    return false;
-  }
-  current.count += 1;
-  return current.count > LIMIT;
-}
+const limiter = new RateLimiter(8, 10 * 60 * 1000);
 
 type FieldBag = Record<string, string>;
 
@@ -156,12 +143,7 @@ async function notifyWebhook(payload: unknown): Promise<{ ok: boolean }> {
 }
 
 export async function POST(request: Request) {
-  const ip =
-    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-    request.headers.get("x-real-ip") ||
-    "unknown";
-
-  if (rateLimited(ip)) {
+  if (limiter.hit(clientIp(request))) {
     return NextResponse.json(
       { ok: false, code: "RATE_LIMITED", message: "Слишком много заявок. Позвоните нам." },
       { status: 429 },

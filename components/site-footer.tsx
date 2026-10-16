@@ -43,13 +43,13 @@ export default function SiteFooter() {
             <h2 className="eyebrow text-paper/50">Разделы</h2>
             <ul className="mt-3 text-[14px]">
               {[
-                ["#katalog", "Каталог"],
-                ["#proekty", "Проекты"],
-                ["#process", "Как заказываем"],
-                ["#materialy", "Материалы"],
-                ["#otzyvy", "Отзывы"],
-                ["#faq", "Вопросы"],
-                ["#kontakty", "Контакты"],
+                ["/#katalog", "Каталог"],
+                ["/#proekty", "Проекты"],
+                ["/#process", "Как заказываем"],
+                ["/#materialy", "Материалы"],
+                ["/#otzyvy", "Отзывы"],
+                ["/#faq", "Вопросы"],
+                ["/#kontakty", "Контакты"],
               ].map(([href, label]) => (
                 <li key={href}>
                   <a
@@ -79,7 +79,7 @@ export default function SiteFooter() {
               <p className="text-paper/60">{company.addressFull}</p>
               <p className="text-paper/60">
                 {company.hoursLabel}{" "}
-                <span className="text-paper/40">({company.hoursNote})</span>
+                <span className="text-paper/55">({company.hoursNote})</span>
               </p>
               <a
                 href={company.twoGis}
@@ -128,7 +128,7 @@ export default function SiteFooter() {
               </a>
             </div>
           </div>
-          <p className="mt-5 max-w-[70rem] text-[12px] leading-[1.65] text-paper/45">
+          <p className="mt-5 max-w-[70rem] text-[12px] leading-[1.65] text-paper/55">
             Фотографии объектов, образцов и офиса опубликованы в карточке компании
             в 2ГИС и принадлежат их авторам. Характеристики профильных систем
             указаны по карточкам производителя на образцах в шоуруме. Сведения о
