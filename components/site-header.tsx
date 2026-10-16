@@ -6,7 +6,7 @@ import Logo from "@/components/logo";
 import { company, primaryPhone, waLink } from "@/data/site";
 
 const nav = [
-  { href: "#produkciya", label: "Продукция" },
+  { href: "#katalog", label: "Каталог" },
   { href: "#proekty", label: "Проекты" },
   { href: "#materialy", label: "Материалы" },
   { href: "#otzyvy", label: "Отзывы" },

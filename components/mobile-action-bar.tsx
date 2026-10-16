@@ -10,10 +10,23 @@ export default function MobileActionBar() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setVisible(window.scrollY > 560);
-    onScroll();
+    const check = () => setVisible(window.scrollY > 560);
+
+    check();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    // Страховка: событие scroll может не прийти, если вкладка не отрисовывается
+    // (фон, восстановление сессии). Опрос одного числа раз в полсекунды это
+    // закрывает и не мешает прокрутке.
+    const guard = window.setInterval(check, 500);
+
+    function onScroll() {
+      check();
+    }
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.clearInterval(guard);
+    };
   }, []);
 
   return (

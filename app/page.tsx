@@ -1,6 +1,6 @@
 import SiteHeader from "@/components/site-header";
 import Hero from "@/components/hero";
-import Products from "@/components/products";
+import Catalog from "@/components/catalog";
 import Advantages from "@/components/advantages";
 import ProjectsGallery from "@/components/projects-gallery";
 import Process from "@/components/process";
@@ -12,6 +12,7 @@ import FinalCta from "@/components/final-cta";
 import Contacts from "@/components/contacts";
 import SiteFooter from "@/components/site-footer";
 import MobileActionBar from "@/components/mobile-action-bar";
+import AiConsultant from "@/components/ai-consultant";
 import ScrollReveal from "@/components/scroll-reveal";
 import { faqs } from "@/data/content";
 
@@ -39,7 +40,7 @@ export default function HomePage() {
 
       <main id="main">
         <Hero />
-        <Products />
+        <Catalog />
         <Advantages />
         <ProjectsGallery />
         <Process />
@@ -53,6 +54,7 @@ export default function HomePage() {
 
       <SiteFooter />
       <MobileActionBar />
+      <AiConsultant />
       <ScrollReveal />
 
       <script

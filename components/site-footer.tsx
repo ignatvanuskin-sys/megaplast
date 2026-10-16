@@ -43,7 +43,7 @@ export default function SiteFooter() {
             <h2 className="eyebrow text-paper/50">Разделы</h2>
             <ul className="mt-3 text-[14px]">
               {[
-                ["#produkciya", "Продукция"],
+                ["#katalog", "Каталог"],
                 ["#proekty", "Проекты"],
                 ["#process", "Как заказываем"],
                 ["#materialy", "Материалы"],
