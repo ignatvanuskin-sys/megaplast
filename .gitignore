@@ -3,6 +3,7 @@
 /out/
 /build
 /.data/
+/docs/qa/
 .DS_Store
 *.pem
 npm-debug.log*
