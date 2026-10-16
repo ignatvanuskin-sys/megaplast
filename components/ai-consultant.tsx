@@ -24,6 +24,7 @@ let memoryTurns: Turn[] = [];
 
 export default function AiConsultant() {
   const [mounted, setMounted] = useState(false);
+  const [pastHero, setPastHero] = useState(false);
   const [open, setOpen] = useState(false);
   const [turns, setTurns] = useState<Turn[]>(memoryTurns.length ? memoryTurns : [OPENER]);
   const [input, setInput] = useState("");
@@ -40,6 +41,30 @@ export default function AiConsultant() {
   useEffect(() => {
     const timer = window.setTimeout(() => setMounted(true), 1600);
     return () => window.clearTimeout(timer);
+  }, []);
+
+  /**
+   * На телефоне кнопка не должна накрывать главную кнопку первого экрана,
+   * поэтому показываем её только после того, как шапка уехала вверх.
+   * На широком экране кнопка ничего не перекрывает — показываем сразу.
+   * Опрос добавлен потому, что событие scroll может не прийти в фоновой вкладке.
+   */
+  useEffect(() => {
+    const check = () => {
+      if (window.matchMedia("(min-width: 640px)").matches) setPastHero(true);
+      else setPastHero(window.scrollY > 620);
+    };
+
+    check();
+    window.addEventListener("scroll", check, { passive: true });
+    window.addEventListener("resize", check);
+    const guard = window.setInterval(check, 500);
+
+    return () => {
+      window.removeEventListener("scroll", check);
+      window.removeEventListener("resize", check);
+      window.clearInterval(guard);
+    };
   }, []);
 
   useEffect(() => {
@@ -149,7 +174,7 @@ export default function AiConsultant() {
   return (
     <>
       {/* Кнопка — не мешает контенту, на телефоне поднята над нижней панелью */}
-      {!open && (
+      {!open && mounted && pastHero && (
         <button
           type="button"
           ref={(node) => {
@@ -157,7 +182,7 @@ export default function AiConsultant() {
           }}
           onClick={() => setOpen(true)}
           aria-label="Открыть ИИ-консультанта"
-          className={`fixed right-4 z-[55] inline-flex items-center gap-2 bg-ink px-3.5 text-paper transition-all duration-500 sm:right-6 ${
+          className={`fixed right-4 z-[55] inline-flex items-center gap-2 border border-paper/25 bg-ink px-3.5 text-paper transition-all duration-500 sm:right-6 ${
             mounted ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0"
           }`}
           style={{

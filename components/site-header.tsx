@@ -21,6 +21,13 @@ export default function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
+  /**
+   * На главной первый экран — фотография, и шапка лежит прямо на ней.
+   * Пока страница не прокручена, весь текст шапки светлый; после прокрутки
+   * шапка получает светлый фон и обычные тёмные цвета.
+   */
+  const overHero = pathname === "/" && !scrolled && !open;
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 16);
     onScroll();
@@ -78,7 +85,7 @@ export default function SiteHeader() {
           }}
           aria-label={`${company.fullName} — на главную`}
         >
-          <Logo compact />
+          <Logo compact tone={overHero ? "light" : "dark"} />
         </a>
 
         <nav aria-label="Основная навигация" className="hidden xl:block">
@@ -87,7 +94,11 @@ export default function SiteHeader() {
               <li key={item.href}>
                 <a
                   href={item.href}
-                  className="relative text-[14px] font-medium text-ink-2 transition-colors hover:text-ink after:absolute after:-bottom-1.5 after:left-0 after:h-px after:w-0 after:bg-accent after:transition-[width] after:duration-300 hover:after:w-full"
+                  className={`relative text-[14px] font-medium transition-colors after:absolute after:-bottom-1.5 after:left-0 after:h-px after:w-0 after:bg-accent after:transition-[width] after:duration-300 hover:after:w-full ${
+                    overHero
+                      ? "text-paper/85 hover:text-paper"
+                      : "text-ink-2 hover:text-ink"
+                  }`}
                 >
                   {item.label}
                 </a>
@@ -99,13 +110,25 @@ export default function SiteHeader() {
         <div className="flex items-center gap-2 sm:gap-4">
           <a
             href={`tel:${primaryPhone.tel}`}
-            className="hidden items-center gap-2 text-[14px] font-semibold text-ink md:inline-flex"
+            className={`hidden items-center gap-2 text-[14px] font-semibold transition-colors md:inline-flex ${
+              overHero ? "text-paper hover:text-paper/80" : "text-ink"
+            }`}
           >
-            <Phone className="h-4 w-4 text-accent" aria-hidden="true" />
+            <Phone
+              className={`h-4 w-4 ${overHero ? "text-accent-2" : "text-accent"}`}
+              aria-hidden="true"
+            />
             <span className="whitespace-nowrap">{primaryPhone.label}</span>
           </a>
 
-          <a href="/#raschet" className="btn btn-primary hidden sm:inline-flex">
+          <a
+            href="/#raschet"
+            className={`btn hidden sm:inline-flex ${
+              overHero
+                ? "btn-accent"
+                : "btn-primary"
+            }`}
+          >
             Рассчитать стоимость
           </a>
 
@@ -115,7 +138,9 @@ export default function SiteHeader() {
             aria-expanded={open}
             aria-controls="mobile-menu"
             aria-label={open ? "Закрыть меню" : "Открыть меню"}
-            className="-mr-2 inline-flex h-11 w-11 items-center justify-center text-ink xl:hidden"
+            className={`-mr-2 inline-flex h-11 w-11 items-center justify-center transition-colors xl:hidden ${
+              overHero ? "text-paper" : "text-ink"
+            }`}
           >
             {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>

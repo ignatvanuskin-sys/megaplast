@@ -199,6 +199,49 @@
     margin-bottom: 0.375rem;
   }
 
+  /* Полоса с фотографией на телефоне: фиксированная высота, чтобы кадр было
+     видно целиком, без плотного затемнения под текстом. На широком экране
+     этот блок становится фоном на всю шапку (см. классы lg:* в hero.tsx). */
+  .hero-media {
+    height: 21rem;
+  }
+  @supports (height: 100svh) {
+    .hero-media {
+      height: min(44svh, 23rem);
+    }
+  }
+
+  /* Первый экран с фотографией: высота с запасом на телефоне.
+     svh не даёт высоте прыгать при появлении адресной строки. */
+  .hero-photo {
+    min-height: 32rem;
+  }
+  @media (min-width: 640px) {
+    .hero-photo {
+      min-height: 34rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .hero-photo {
+      min-height: 38rem;
+    }
+  }
+  @supports (height: 100svh) {
+    .hero-photo {
+      min-height: min(84svh, 40rem);
+    }
+    @media (min-width: 640px) {
+      .hero-photo {
+        min-height: min(82svh, 44rem);
+      }
+    }
+    @media (min-width: 1024px) {
+      .hero-photo {
+        min-height: min(78svh, 46rem);
+      }
+    }
+  }
+
   /* Плитки выбора: сам переключатель скрыт, поэтому фокус показываем на обёртке */
   .tile:has(input:focus-visible) {
     outline: 2px solid var(--color-accent);
