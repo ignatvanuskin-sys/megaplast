@@ -1,0 +1,15 @@
+# Единый стиль переводов строк в репозитории
+* text=auto eol=lf
+
+# Бинарные файлы — без конвертации
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.avif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+
+# Служебные файлы сборки не считаются «изменёнными» в диффах
+package-lock.json -diff linguist-generated
